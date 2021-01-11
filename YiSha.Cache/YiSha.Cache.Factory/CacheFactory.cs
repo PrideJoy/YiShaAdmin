@@ -5,6 +5,7 @@ using YiSha.RedisCache;
 
 namespace YiSha.Cache.Factory
 {
+    // 缓存工厂
     public class CacheFactory
     {
         private static ICache cache = null;

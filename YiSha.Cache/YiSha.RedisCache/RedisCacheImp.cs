@@ -8,6 +8,7 @@ using YiSha.Util;
 
 namespace YiSha.RedisCache
 {
+    // 缓存Redis实现
     public class RedisCacheImp : ICache
     {
         private IDatabase cache;

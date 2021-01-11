@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace YiSha.Cache.Interface
 {
+    // 缓存抽象接口
     public interface ICache
     {
         bool SetCache<T>(string key, T value, DateTime? expireTime = null);

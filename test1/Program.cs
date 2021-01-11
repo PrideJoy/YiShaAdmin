@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -12,6 +13,8 @@ using YiSha.Entity.SystemManage;
 using YiSha.Entity.ToolManage;
 using YiSha.Model.Param.OrganizationManage;
 using YiSha.Model.Param.SystemManage;
+using YiSha.Model.Result.SystemManage;
+using YiSha.Service.OrganizationManage;
 using YiSha.Service.SystemManage;
 using YiSha.Util.Model;
 
@@ -19,46 +22,86 @@ namespace test1
 {
     class Program
     {
-       
-        static void Main(string[] args)
+        public static PositionBLL positionBLL = new PositionBLL();
+        static  void Main(string[] args)
         {
 
+            //var e = GetPageListJson();
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(e.Result));
 
-            ///张三
-            /// /
-            /// 131
-            /// 123123
-            /// 12312
-            var asd = get();
-
-
-            BirthdayBLL birbll = new BirthdayBLL();
-            var a= birbll.GetEntity(1);
-            PositionListParam aaListParam=new PositionListParam();
-            Pagination pagination = new Pagination();
-          
-
-
-
-            Console.WriteLine(a.ToString());
-           
-
+            var e = GetBirthday();
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(e.Result));
+            
+            //Task.Run(() =>
+            //{
+            //    var e = GetPageListJson();
+            //    Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(e.Result));
+            //});
+            Thread.Sleep(50000);
+            //var b = GetList(null);
+            //var a = GetPageListJson();
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(a));
+            Console.WriteLine("ok");
         }
 
 
-        public static  Task<TData<RoleEntity>> get()
+
+
+
+        public static async Task<TData<List<NewsEntity>>> GetList2(NewsListParam param)
         {
-            RoleBLL bl = new RoleBLL();
-            var asdasd =  bl.GetEntity(16508640061130146);
-            return asdasd;
+            AreaBLL areaBLL = new AreaBLL();
+            NewsService newsService = new NewsService();
+            TData<List<NewsEntity>> obj = new TData<List<NewsEntity>>();
+            areaBLL.SetAreaParam(param);
+            obj.Data = await newsService.GetList(param);
+            obj.Total = obj.Data.Count;
+            obj.Tag = 1;
+            return obj;
         }
 
-        private static PositionBLL positionBLL = new PositionBLL();
-        //public static async Task<IActionResult> GetPageListJson(PositionListParam param, Pagination pagination)
+        [HttpGet]
+        public static async Task<TData<PositionEntity>> GetPageListJson()
+        {
+
+            TData<PositionEntity> obj = await positionBLL.GetEntity(16508640061130139);
+
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+
+            return obj;
+        }
+
+
+
+        public static BirthdayBLL BirthdayBLL = new BirthdayBLL();
+
+        [HttpGet]
+        public static async Task<TData<List<BirthdayeEntity>>> GetBirthday()
+        {
+
+            TData<List<BirthdayeEntity>> obj = await BirthdayBLL.GetList(null);
+
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+
+            return obj;
+        }
+
+
+        //public static string ToJson(this object obj)
         //{
-        //    TData<List<PositionEntity>> obj = await positionBLL.GetPageList(param, pagination);
-        //    return obj;
+        //    try
+        //    {
+        //        if (obj == null) return "";
+        //        return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return "";
+        //    }
         //}
 
+
     }
+
+
 }

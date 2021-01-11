@@ -8,6 +8,7 @@ using YiSha.Util;
 
 namespace YiSha.MemoryCache
 {
+    // 缓存MemoryCache实现
     public class MemoryCacheImp : ICache
     {
         private IMemoryCache cache = GlobalContext.ServiceProvider.GetService<IMemoryCache>();
